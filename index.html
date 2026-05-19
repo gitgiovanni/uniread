@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal UNIGRD</title>
-    <!-- Fonte moderna e ícones -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -203,6 +202,13 @@
             justify-content: center;
             font-size: 1.2rem;
             box-shadow: var(--shadow);
+            overflow: hidden; /* Garante que a imagem não vaze do círculo */
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ajusta a imagem sem distorcer */
         }
 
         /* --- DASHBOARD CONTENT --- */
@@ -360,10 +366,8 @@
 </head>
 <body>
 
-    <!-- Overlay Mobile -->
     <div class="overlay" id="overlay"></div>
 
-    <!-- Painel Lateral -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="logo">UNIGRD</div>
@@ -381,9 +385,7 @@
         </ul>
     </aside>
 
-    <!-- Conteúdo Principal -->
     <main class="main-content">
-        <!-- Topo -->
         <header class="topbar">
             <button class="menu-toggle" id="openSidebar">
                 <i class="fa-solid fa-bars"></i>
@@ -391,7 +393,6 @@
             
             <div class="page-title">Portal do Aluno</div>
 
-            <!-- Perfil (Canto Direito) -->
             <div class="profile-widget">
                 <div class="profile-info">
                     <span class="profile-name">
@@ -401,15 +402,13 @@
                     <span class="profile-role">Administração</span>
                 </div>
                 <div class="profile-avatar">
-                    <i class="fa-solid fa-user"></i>
+                    <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD02Mzk3NCZ2ZXI9MTAwMCZmaWxlPVdoYXRzQXBwK0ltYWdlKzIwMjYtMDUtMTkrYXQrMTYuMDAuMTUuanBlZyZjcmM9MjUwODkwODc0NyZzaXplPTAuMTU3NzY5JnVJZD0yOCZmU0lkPTEmdVNJZD0xJmQ9ZmFsc2UmdGtuPSZwdWJsaWNVcmw9dHJ1ZSZhdHRhY2g9ZmFsc2U=.jpeg" alt="Foto de perfil da Giovanna">
                 </div>
             </div>
         </header>
 
-        <!-- Corpo da Página -->
         <section class="content">
             
-            <!-- Matérias Disponíveis -->
             <h2 class="section-header">Matérias Disponíveis</h2>
             <div class="grid-cards">
                 
@@ -444,7 +443,6 @@
                 </div>
             </div>
 
-            <!-- Matérias a Cursar -->
             <h2 class="section-header">Matérias a Cursar (Matriculadas)</h2>
             <div class="grid-cards">
                 
@@ -473,7 +471,6 @@
         </section>
     </main>
 
-    <!-- Script para o menu responsivo no celular -->
     <script>
         const sidebar = document.getElementById('sidebar');
         const openBtn = document.getElementById('openSidebar');
