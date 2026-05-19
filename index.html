@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal UNIGRD</title>
+    <!-- Fonte moderna e ícones -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #4F46E5; /* Indigo */
+            --primary-hover: #4338ca;
+            --bg-color: #F3F4F6;
+            --sidebar-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --card-bg: #FFFFFF;
+            --border-color: #E5E7EB;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+            --success-color: #10B981; /* Verde para o status ativo */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+        }
+
+        .close-sidebar {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 20px 10px;
+            flex: 1;
+        }
+
+        .nav-links li {
+            margin-bottom: 8px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a i {
+            margin-right: 12px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            display: flex;
+            flex-direction: column;
+            width: calc(100% - 260px);
+            transition: var(--transition);
+        }
+
+        /* --- TOPBAR --- */
+        .topbar {
+            height: 70px;
+            background-color: var(--sidebar-bg);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .page-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .profile-widget {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 50px;
+            transition: var(--transition);
+        }
+
+        .profile-widget:hover {
+            background-color: var(--bg-color);
+        }
+
+        .profile-info {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- STATUS BADGE (ATIVO) --- */
+        .status-badge {
+            background-color: var(--success-color);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* --- DASHBOARD CONTENT --- */
+        .content {
+            padding: 32px;
+            flex: 1;
+        }
+
+        .section-header {
+            margin-bottom: 20px;
+            margin-top: 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .section-header:first-child {
+            margin-top: 0;
+        }
+
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .subject-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background-color: #EEF2FF;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        .subject-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .subject-details {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            flex: 1;
+        }
+
+        .subject-details span {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: #EEF2FF;
+        }
+
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+                box-shadow: 4px 0 24px rgba(0,0,0,0.1);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .close-sidebar {
+                display: block;
+            }
+
+            .page-title {
+                display: none;
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Overlay Mobile -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Painel Lateral -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">UNIGRD</div>
+            <button class="close-sidebar" id="closeSidebar">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="active"><i class="fa-solid fa-house"></i> Home</a></li>
+            <li><a href="#"><i class="fa-solid fa-graduation-cap"></i> Vida Acadêmica</a></li>
+            <li><a href="#"><i class="fa-solid fa-file-signature"></i> Solicitações</a></li>
+            <li><a href="#"><i class="fa-solid fa-certificate"></i> Meus Certificados</a></li>
+            <li><a href="#"><i class="fa-solid fa-puzzle-piece"></i> Ativ. Complementares</a></li>
+            <li><a href="#"><i class="fa-solid fa-rotate"></i> Rematrícula</a></li>
+        </ul>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        <!-- Topo -->
+        <header class="topbar">
+            <button class="menu-toggle" id="openSidebar">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            
+            <div class="page-title">Portal do Aluno</div>
+
+            <!-- Perfil (Canto Direito) -->
+            <div class="profile-widget">
+                <div class="profile-info">
+                    <span class="profile-name">
+                        Giovanna Leonardi 
+                        <span class="status-badge">Ativo</span>
+                    </span>
+                    <span class="profile-role">Administração</span>
+                </div>
+                <div class="profile-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Corpo da Página -->
+        <section class="content">
+            
+            <!-- Matérias Disponíveis -->
+            <h2 class="section-header">Matérias Disponíveis</h2>
+            <div class="grid-cards">
+                
+                <div class="subject-card">
+                    <div class="card-icon"><i class="fa-solid fa-microchip"></i></div>
+                    <h3 class="subject-title">Contabilidade e finanças</h3>
+                    <div class="subject-details">
+                        <span><i class="fa-regular fa-clock"></i> Carga Horária: 80h</span>
+                        <span><i class="fa-solid fa-chalkboard-user"></i> Prof: Dr. Roberto</span>
+                    </div>
+                    <button class="btn">Matricular-se</button>
+                </div>
+
+                <div class="subject-card">
+                    <div class="card-icon"><i class="fa-solid fa-brain"></i></div>
+                    <h3 class="subject-title">Marketing e Big Data</h3>
+                    <div class="subject-details">
+                        <span><i class="fa-regular fa-clock"></i> Carga Horária: 60h</span>
+                        <span><i class="fa-solid fa-chalkboard-user"></i> Prof: Dra. Silvia</span>
+                    </div>
+                    <button class="btn">Matricular-se</button>
+                </div>
+
+                <div class="subject-card">
+                    <div class="card-icon"><i class="fa-solid fa-code"></i></div>
+                    <h3 class="subject-title">Gestão de pessoas</h3>
+                    <div class="subject-details">
+                        <span><i class="fa-regular fa-clock"></i> Carga Horária: 40h</span>
+                        <span><i class="fa-solid fa-chalkboard-user"></i> Prof: Me. Carlos</span>
+                    </div>
+                    <button class="btn">Matricular-se</button>
+                </div>
+            </div>
+
+            <!-- Matérias a Cursar -->
+            <h2 class="section-header">Matérias a Cursar (Matriculadas)</h2>
+            <div class="grid-cards">
+                
+                <div class="subject-card">
+                    <div class="card-icon" style="background-color: #ECFDF5; color: #10B981;"><i class="fa-solid fa-robot"></i></div>
+                    <h3 class="subject-title">Educação Financeira II</h3>
+                    <div class="subject-details">
+                        <span><i class="fa-regular fa-calendar"></i> Semestre: 2026.2</span>
+                        <span><i class="fa-solid fa-door-open"></i> Sala: Laboratório 3</span>
+                    </div>
+                    <button class="btn btn-outline">Acessar Conteúdo</button>
+                </div>
+
+                <div class="subject-card">
+                    <div class="card-icon" style="background-color: #ECFDF5; color: #10B981;"><i class="fa-solid fa-book-open"></i></div>
+                    <h3 class="subject-title">Operações e qualidade</h3>
+                    <div class="subject-details">
+                        <span><i class="fa-regular fa-calendar"></i> Semestre: 2026.2</span>
+                        <span><i class="fa-solid fa-door-open"></i> Sala: Orientação</span>
+                    </div>
+                    <button class="btn btn-outline">Acessar Conteúdo</button>
+                </div>
+
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Script para o menu responsivo no celular -->
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const openBtn = document.getElementById('openSidebar');
+        const closeBtn = document.getElementById('closeSidebar');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        openBtn.addEventListener('click', toggleMenu);
+        closeBtn.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+    </script>
+</body>
+</html>
