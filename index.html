@@ -223,8 +223,8 @@
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background-color: var(--primary-color);
-            color: white;
+            background-color: #E5E7EB; /* Fundo cinza para quando estiver sem foto */
+            color: var(--text-muted);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -491,6 +491,7 @@
                     </div>
                 </div>
                 <div class="profile-avatar">
+                    <i class="fa-solid fa-user" id="userPlaceholder" style="display: none;"></i>
                     <img id="userAvatar" src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD0xMTQ1MDMmdmVyPTEwMDAmZmlsZT1tYXJnaW8uanBlZyZjcmM9MjA3OTE3NjYyNiZzaXplPTAuMTYzNDc1JnVJZD0yOCZmU0lkPTEmdVNJZD0xJmQ9ZmFsc2UmdGtuPSZwdWJsaWNVcmw9dHJ1ZSZhdHRhY2g9ZmFsc2U=.jpeg" alt="Foto de perfil">
                 </div>
             </div>
@@ -581,17 +582,31 @@
         const userName = document.getElementById('userName');
         const btnCarteirinha = document.getElementById('btnCarteirinha');
         
+        // Elementos da foto de perfil
+        const userAvatar = document.getElementById('userAvatar');
+        const userPlaceholder = document.getElementById('userPlaceholder');
+        
         let isVanessa = true; // Controla qual conta está ativa
 
         btnTrocarConta.addEventListener('click', () => {
             isVanessa = !isVanessa;
             
             if (isVanessa) {
+                // Conta da Vanessa
                 userName.textContent = "VANESSA DA SILVA PERES";
-                btnCarteirinha.style.display = "none"; // Oculta botão da carteirinha
+                btnCarteirinha.style.display = "none";
+                
+                // Mostra a foto da Vanessa
+                userAvatar.style.display = "block";
+                userPlaceholder.style.display = "none";
             } else {
+                // Conta da Giovanna
                 userName.textContent = "GIOVANNA PERES LEONARDI";
-                btnCarteirinha.style.display = "inline-block"; // Mostra botão da carteirinha
+                btnCarteirinha.style.display = "inline-block";
+                
+                // Oculta a foto e mostra o ícone de usuário padrão vazio
+                userAvatar.style.display = "none";
+                userPlaceholder.style.display = "block";
             }
         });
 
