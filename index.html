@@ -151,14 +151,9 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            cursor: pointer;
             padding: 6px 12px;
-            border-radius: 50px;
+            border-radius: 8px;
             transition: var(--transition);
-        }
-
-        .profile-widget:hover {
-            background-color: var(--bg-color);
         }
 
         .profile-info {
@@ -172,10 +167,10 @@
             font-size: 0.9rem;
             display: flex;
             align-items: center;
+            justify-content: flex-end;
             gap: 8px;
         }
 
-        /* --- STATUS BADGE (ATIVO) --- */
         .status-badge {
             background-color: var(--success-color);
             color: white;
@@ -191,9 +186,42 @@
             color: var(--text-muted);
         }
 
+        .profile-actions {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+            margin-top: 6px;
+        }
+
+        .btn-profile {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 0.65rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .btn-profile:hover {
+            background-color: var(--border-color);
+        }
+
+        .btn-carteirinha {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-carteirinha:hover {
+            background-color: var(--primary-hover);
+        }
+
         .profile-avatar {
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             background-color: var(--primary-color);
             color: white;
@@ -202,13 +230,13 @@
             justify-content: center;
             font-size: 1.2rem;
             box-shadow: var(--shadow);
-            overflow: hidden; /* Garante que a imagem não vaze do círculo */
+            overflow: hidden;
         }
 
         .profile-avatar img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ajusta a imagem sem distorcer */
+            object-fit: cover;
         }
 
         /* --- DASHBOARD CONTENT --- */
@@ -311,6 +339,51 @@
             background-color: #EEF2FF;
         }
 
+        /* --- MODAL CARTEIRINHA --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close-modal:hover {
+            color: #ccc;
+        }
+
         /* --- RESPONSIVIDADE --- */
         @media (max-width: 992px) {
             .sidebar {
@@ -368,6 +441,14 @@
 
     <div class="overlay" id="overlay"></div>
 
+    <!-- Modal da Carteirinha -->
+    <div class="modal" id="carteirinhaModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD0xMTUyNzMmdmVyPTEwMDAmZmlsZT1XaGF0c0FwcCtJbWFnZSsyMDI2LTEwLTIzK2F0KzEyLjU2LjM5LmpwZWcmY3JjPTEyNDc4MDAzMDImc2l6ZT0wLjA1NDkzNSZ1SWQ9MjgmZlNJZD0xJnVTSWQ9MSZkPWZhbHNlJnRrbj0mcHVibGljVXJsPXRydWUmYXR0YWNoPWZhbHNl.jpeg" alt="Carteirinha de Estudante">
+        </div>
+    </div>
+
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="logo">UNIGRD</div>
@@ -396,13 +477,21 @@
             <div class="profile-widget">
                 <div class="profile-info">
                     <span class="profile-name">
-                        VANESSA DA SILVA PERES
+                        <span id="userName">VANESSA DA SILVA PERES</span>
                         <span class="status-badge">Ativo</span>
                     </span>
                     <span class="profile-role">Administração</span>
+                    <div class="profile-actions">
+                        <button class="btn-profile btn-carteirinha" id="btnCarteirinha" style="display: none;">
+                            <i class="fa-solid fa-id-card"></i> Ver Carteirinha
+                        </button>
+                        <button class="btn-profile" id="btnTrocarConta">
+                            <i class="fa-solid fa-users-arrows-rotate"></i> Trocar de Conta
+                        </button>
+                    </div>
                 </div>
                 <div class="profile-avatar">
-                    <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD0xMTQ1MDMmdmVyPTEwMDAmZmlsZT1tYXJnaW8uanBlZyZjcmM9MjA3OTE3NjYyNiZzaXplPTAuMTYzNDc1JnVJZD0yOCZmU0lkPTEmdVNJZD0xJmQ9ZmFsc2UmdGtuPSZwdWJsaWNVcmw9dHJ1ZSZhdHRhY2g9ZmFsc2U=.jpeg" alt="Foto de perfil da Giovanna">
+                    <img id="userAvatar" src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD0xMTQ1MDMmdmVyPTEwMDAmZmlsZT1tYXJnaW8uanBlZyZjcmM9MjA3OTE3NjYyNiZzaXplPTAuMTYzNDc1JnVJZD0yOCZmU0lkPTEmdVNJZD0xJmQ9ZmFsc2UmdGtuPSZwdWJsaWNVcmw9dHJ1ZSZhdHRhY2g9ZmFsc2U=.jpeg" alt="Foto de perfil">
                 </div>
             </div>
         </header>
@@ -472,6 +561,7 @@
     </main>
 
     <script>
+        // Lógica do Menu Mobile
         const sidebar = document.getElementById('sidebar');
         const openBtn = document.getElementById('openSidebar');
         const closeBtn = document.getElementById('closeSidebar');
@@ -485,6 +575,45 @@
         openBtn.addEventListener('click', toggleMenu);
         closeBtn.addEventListener('click', toggleMenu);
         overlay.addEventListener('click', toggleMenu);
+
+        // Lógica de Troca de Contas
+        const btnTrocarConta = document.getElementById('btnTrocarConta');
+        const userName = document.getElementById('userName');
+        const btnCarteirinha = document.getElementById('btnCarteirinha');
+        
+        let isVanessa = true; // Controla qual conta está ativa
+
+        btnTrocarConta.addEventListener('click', () => {
+            isVanessa = !isVanessa;
+            
+            if (isVanessa) {
+                userName.textContent = "VANESSA DA SILVA PERES";
+                btnCarteirinha.style.display = "none"; // Oculta botão da carteirinha
+            } else {
+                userName.textContent = "GIOVANNA PERES LEONARDI";
+                btnCarteirinha.style.display = "inline-block"; // Mostra botão da carteirinha
+            }
+        });
+
+        // Lógica do Modal da Carteirinha
+        const modal = document.getElementById('carteirinhaModal');
+        const closeModal = document.getElementById('closeModal');
+
+        btnCarteirinha.addEventListener('click', () => {
+            modal.classList.add('active');
+        });
+
+        // Fechar pelo botão (X)
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        // Fechar clicando fora da imagem
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
